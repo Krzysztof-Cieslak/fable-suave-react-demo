@@ -8,9 +8,7 @@ open Fable.Import
 module R = Fable.Helpers.React
 module P = Fable.Helpers.React.Props
 
-let (^) = (<|)
- 
 ReactDom.render(
-    R.span [ P.Value ^ U2.Case1 "Hello World" ] [],
+    R.span [] [unbox "test"],
     Browser.document.getElementById "content"
-) 
+)  
