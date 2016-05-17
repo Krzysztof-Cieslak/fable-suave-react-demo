@@ -1,0 +1,22 @@
+{
+  "name": "fable-webpack-demo",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "fable",
+    "watch": "fable -w --target watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "fable-compiler": "^0.2.12",
+    "fable-import-react": "0.0.14",
+    "source-map-loader": "^0.1.5",
+    "webpack": "^1.13.0"
+  },
+  "dependencies": {
+    "core-js": "^2.4.0",
+    "fable-core": "0.0.21",
+    "react": "^15.0.2"
+  }
+}

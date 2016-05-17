@@ -1,0 +1,11 @@
+NUGET
+  remote: https://www.nuget.org/api/v2
+  specs:
+    FAKE (4.26)
+    FSharp.Compiler.Service (3.0)
+    FSharp.Core (4.0.0.1)
+    Node.js (5.3)
+    Npm.js (2.13.1)
+      Node.js (>= 0.12.7)
+    Suave (1.1.2)
+      FSharp.Core (>= 3.1.2.5)
