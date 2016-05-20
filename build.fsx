@@ -75,7 +75,7 @@ Target "develop" (fun _ ->
   startNpmWatcher ()
   use watcher = !! (__SOURCE_DIRECTORY__ @@ "src" @@ "*.*") |> WatchChanges (fun _ -> reloadAppServer())
   
-  System.Diagnostics.Process.Start("http://localhost:8034/index.html") |> ignore
+  System.Diagnostics.Process.Start("http://localhost:8034") |> ignore
   System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite)
 )
 
