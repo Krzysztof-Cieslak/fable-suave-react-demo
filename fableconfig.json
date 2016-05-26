@@ -1,8 +1,10 @@
 {
     "module": "commonjs",
     "sourceMaps": true,
-    "projFile": "./src/client/code.fsx",
+    "projFile": "./src/client/client.fsproj",
     "outDir": "temp",
+    "babelPlugins": ["transform-runtime"],
+    "copyExt": true,
     "scripts": {
         "prebuild": "npm install",
         "postbuild": "webpack"

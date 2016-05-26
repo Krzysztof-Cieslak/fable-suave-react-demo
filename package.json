@@ -9,14 +9,15 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "fable-compiler": "^0.2.12",
-    "fable-import-react": "0.0.14",
+    "fable-compiler": "*",
+    "fable-import-react": "*",
     "source-map-loader": "^0.1.5",
+    "babel-plugin-transform-runtime": "^6.6.0",
     "webpack": "^1.13.0"
   },
   "dependencies": {
     "core-js": "^2.4.0",
-    "fable-core": "0.0.21",
+    "fable-core": "*",
     "react": "^15.0.2",
     "react-dom": "^15.0.2"
   }
