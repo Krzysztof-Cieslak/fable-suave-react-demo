@@ -1,21 +1,33 @@
+[<RequireQualifiedAccess>]
 module Counter
 
 module R = Fable.Helpers.React
 module P = Fable.Helpers.React.Props
 open Abstractions
 
-type CounterViewModel = {
+type ViewModel = {
     Count : int
 }
 with static member Empty = {Count = 0}
 
-let createCounter (cursor : cursor<CounterViewModel>) = 
-    let render (update : CounterViewModel -> unit) (st : CounterViewModel) = 
+type counterComponent(cursor) = 
+    inherit viewComponent<ViewModel>(cursor)
+    
+    member x.render () =  
+        let st = x.GetState () 
+
         R.div [] [
-            R.button [P.OnClick (fun e -> {st with Count = st.Count + 1} |> update ) ] [ unbox "Add" ]
-            R.button [P.OnClick (fun e -> {st with Count = st.Count - 1} |> update ) ] [ unbox "Remove" ]
+            R.button [P.OnClick (fun e -> {st with Count = st.Count + 1} |> x.Update ) ] [ unbox "Add" ]
+            R.button [P.OnClick (fun e -> {st with Count = st.Count - 1} |> x.Update ) ] [ unbox "Remove" ]
             R.span [] [unbox st.Count ]
         ]
+         
         
-    ViewComponent.create cursor render 
+        
+let create cursor = 
+    new counterComponent(cursor)
+    //|> R.toPlainJsObj 
+    //|> unbox
+    |> createComponent<ViewModel>
+        
  

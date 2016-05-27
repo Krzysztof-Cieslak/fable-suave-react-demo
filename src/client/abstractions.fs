@@ -20,9 +20,11 @@ module State =
     let current state =
         state.History |> List.head
         
-    let update state newValue= 
-        state.History <- (newValue :: state.History)
-        state._stateUpdated.Trigger newValue
+    let update state newValue = 
+        let s = !state
+        s.History <- (newValue :: s.History)
+        
+        s._stateUpdated.Trigger newValue
 
 type lens<'a,'b> = ('a -> 'b) * ('b -> 'a -> 'a)
 
@@ -40,52 +42,77 @@ module Operators =
     let (>->) a b = Lens.combine b a
     
 
-type cursor<'a> = (unit -> 'a) * ('a -> unit) * IEvent<'a> 
+type cursor<'a> = {
+    Getter: unit -> 'a
+    Setter: 'a -> unit
+    Stream: IEvent<'a>
+    
+} 
 
 module Cursor = 
     let create state lens : cursor<_> = 
+        
         let getter () = 
-            state 
+            let s = !state
+            s
             |> State.current 
             |> Lens.get lens
     
         let setter value =
-            state 
+            let s = !state
+            s 
             |> State.current 
             |> Lens.set lens value
             |> State.update state
         
         let stream = 
-            state.StateUpdate
-            |> Event.map (Lens.get lens)
-            
-        (getter, setter, stream)
+            let s = !state
+            s.StateUpdate
+            |> Event.map (
+                fun n -> Lens.get lens n)
+        {Getter = getter; Setter = setter; Stream = stream}
 
-     
 [<AbstractClass>]
 type viewComponent<'a> (cursor : cursor<'a>) = 
     inherit R.Component<cursor<'a>, 'a> (cursor)
     
-    let (getState, update, stream) = cursor
-    
     member x.getInitialState () = 
-        getState () |> x.setState
+        cursor.Getter () |> x.setState
         
-    member x.componentWillMount () = 
-        stream |> Observable.add x.setState
+    member x.componentDidMount  () = 
+        cursor.Stream |> Event.add x.setState
         
-    member x.Update = update
+    member x.Update = cursor.Setter
     
-    member x.GetState = getState
+    member x.GetState = cursor.Getter
     
-    abstract member Render : unit -> React.ReactElement<obj>
+   // abstract member render : unit -> React.ReactElement<obj> 
+
     
+     
+// module ViewComponent = 
+//     let create cursor render = 
+//         let cls = React.createClass (new viewComponent<_>(cursor, render) |> unbox)
+//         React.createElement(cls, cursor )
+module internal Helpers = 
     
-module ViewComponent = 
-    let create cursor render = 
-        {
-            new viewComponent<_>(cursor) with
-                member this.Render () = 
-                    let v = this.GetState ()                  
-                    render this.Update v
-        }
+    let internal toPlainJsObj (o: obj) start =
+        JS.Object.getOwnPropertyNames(o)
+        |> Seq.fold (fun o2 k -> o2?(k) <- o?(k); o2) start
+
+    let internal createElement<'P> (props : 'P) (cmponent : React.ClassicComponentClass<'P>) =
+        let p = props |> R.toPlainJsObj |> unbox
+        React.createElement(cmponent, p, [||]) |> unbox<React.ClassicElement<'P>>
+        
+    let internal toCompSpec<'S> (comp : viewComponent<'S>) = 
+        let o1 = toPlainJsObj comp (obj())
+        o1?render <- comp.render
+        o1 |> unbox<React.ComponentSpec<cursor<'S>,'S>>
+
+let createComponent<'S> (c : viewComponent<'S>) =
+
+    let t = c |> Helpers.toCompSpec<'S>
+
+    t 
+    |> React.createClass
+    |> Helpers.createElement<cursor<'S>> c.props 

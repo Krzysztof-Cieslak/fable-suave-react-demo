@@ -5,27 +5,24 @@ open Fable.Core
 open Fable.Import
 open Abstractions
 open Abstractions.Operators
-open Counter 
 
 module R = Fable.Helpers.React
 module P = Fable.Helpers.React.Props  
 
 type ViewModel = {
-    Counter : CounterViewModel 
+    Counter : Counter.ViewModel 
 }
-with static member Empty = {Counter = CounterViewModel.Empty}
+with static member Empty = {Counter = Counter.ViewModel.Empty}
 
-let state = State.init ViewModel.Empty
-
-let cursor = 
+let state = ref <| State.init ViewModel.Empty
+   
+let counter  = 
     ((fun x -> x.Counter), (fun t x -> {x with Counter = t}))
     |> Cursor.create state
+    |> Counter.create  
 
-let comp = createCounter cursor  
-
-
-ReactDom.render( 
-    comp.render (),
+ReactDom.render(  
+    counter,
     Browser.document.getElementById "content"
 )  
 |> ignore
