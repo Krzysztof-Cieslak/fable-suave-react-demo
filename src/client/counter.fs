@@ -20,9 +20,7 @@ type counterComponent(cursor) =
             R.button [P.OnClick (fun e -> {st with Count = st.Count + 1} |> x.Update ) ] [ unbox "Add" ]
             R.button [P.OnClick (fun e -> {st with Count = st.Count - 1} |> x.Update ) ] [ unbox "Remove" ]
             R.span [] [unbox st.Count ]
-        ]
-         
-        
+        ] 
         
 let create cursor = 
     new counterComponent(cursor)

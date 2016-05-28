@@ -19,8 +19,6 @@ let state = ref <| State.init ViewModel.Empty
 let cursor  = 
     ((fun x -> x.Counter), (fun t x -> {x with Counter = t}))
     |> Cursor.create state
-    //|> Counter.create  
-
 
 ReactDom.render(  
     R.com<Counter.counterComponent,_,_> cursor [], 

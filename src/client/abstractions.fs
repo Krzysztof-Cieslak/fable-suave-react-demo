@@ -86,10 +86,3 @@ type viewComponent<'a> (cursor : cursor<'a>) =
     member x.GetState = cursor.Getter
     
     abstract member render : unit -> React.ReactElement<obj> 
-
-     
-     
-// module ViewComponent = 
-//     let create cursor render = 
-//         let cls = React.createClass (new viewComponent<_>(cursor, render) |> unbox)
-//         React.createElement(cls, cursor )
