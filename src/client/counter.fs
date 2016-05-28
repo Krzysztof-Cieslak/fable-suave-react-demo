@@ -13,7 +13,7 @@ with static member Empty = {Count = 0}
 type counterComponent(cursor) = 
     inherit viewComponent<ViewModel>(cursor)
     
-    member x.render () =  
+    override x.render () =  
         let st = x.GetState () 
 
         R.div [] [
@@ -26,8 +26,5 @@ type counterComponent(cursor) =
         
 let create cursor = 
     new counterComponent(cursor)
-    //|> R.toPlainJsObj 
-    //|> unbox
-    |> createComponent<ViewModel>
         
  

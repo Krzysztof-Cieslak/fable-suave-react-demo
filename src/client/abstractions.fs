@@ -76,43 +76,20 @@ module Cursor =
 type viewComponent<'a> (cursor : cursor<'a>) = 
     inherit R.Component<cursor<'a>, 'a> (cursor)
     
-    member x.getInitialState () = 
-        cursor.Getter () |> x.setState
+    member val state = cursor.Getter () with get,set
         
-    member x.componentDidMount  () = 
+    member x.componentDidMount = fun () ->
         cursor.Stream |> Event.add x.setState
         
     member x.Update = cursor.Setter
     
     member x.GetState = cursor.Getter
     
-   // abstract member render : unit -> React.ReactElement<obj> 
+    abstract member render : unit -> React.ReactElement<obj> 
 
-    
+     
      
 // module ViewComponent = 
 //     let create cursor render = 
 //         let cls = React.createClass (new viewComponent<_>(cursor, render) |> unbox)
 //         React.createElement(cls, cursor )
-module internal Helpers = 
-    
-    let internal toPlainJsObj (o: obj) start =
-        JS.Object.getOwnPropertyNames(o)
-        |> Seq.fold (fun o2 k -> o2?(k) <- o?(k); o2) start
-
-    let internal createElement<'P> (props : 'P) (cmponent : React.ClassicComponentClass<'P>) =
-        let p = props |> R.toPlainJsObj |> unbox
-        React.createElement(cmponent, p, [||]) |> unbox<React.ClassicElement<'P>>
-        
-    let internal toCompSpec<'S> (comp : viewComponent<'S>) = 
-        let o1 = toPlainJsObj comp (obj())
-        o1?render <- comp.render
-        o1 |> unbox<React.ComponentSpec<cursor<'S>,'S>>
-
-let createComponent<'S> (c : viewComponent<'S>) =
-
-    let t = c |> Helpers.toCompSpec<'S>
-
-    t 
-    |> React.createClass
-    |> Helpers.createElement<cursor<'S>> c.props 

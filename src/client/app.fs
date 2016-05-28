@@ -16,13 +16,14 @@ with static member Empty = {Counter = Counter.ViewModel.Empty}
 
 let state = ref <| State.init ViewModel.Empty
    
-let counter  = 
+let cursor  = 
     ((fun x -> x.Counter), (fun t x -> {x with Counter = t}))
     |> Cursor.create state
-    |> Counter.create  
+    //|> Counter.create  
+
 
 ReactDom.render(  
-    counter,
+    R.com<Counter.counterComponent,_,_> cursor [], 
     Browser.document.getElementById "content"
 )  
 |> ignore
