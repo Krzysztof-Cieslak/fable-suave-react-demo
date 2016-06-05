@@ -13,15 +13,23 @@ type ViewModel = {
     Counter : Counter.ViewModel 
 }
 with static member Empty = {Counter = Counter.ViewModel.Empty}
+     static member _Counter =  ((fun x -> x.Counter), (fun t x -> {x with Counter = t}))
 
 let state = ref <| State.init ViewModel.Empty
    
-let cursor  = 
-    ((fun x -> x.Counter), (fun t x -> {x with Counter = t}))
+let counterCursor = 
+    ViewModel._Counter
+    |> Cursor.create state
+
+let clickPrinterCursor = 
+    ViewModel._Counter >-> Counter.ViewModel._Click
     |> Cursor.create state
 
 ReactDom.render(  
-    R.com<Counter.counterComponent,_,_> cursor [], 
+    R.div [] [
+        R.com<Counter.Component,_,_> counterCursor []
+        R.com<ClickPrinter.Component,_,_> clickPrinterCursor []
+    ],
     Browser.document.getElementById "content"
 )  
 |> ignore
