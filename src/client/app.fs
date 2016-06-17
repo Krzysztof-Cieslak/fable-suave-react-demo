@@ -3,32 +3,27 @@ module App
 open System
 open Fable.Core
 open Fable.Import
-open Abstractions
+open Abstractions 
 open Abstractions.Operators
 
 module R = Fable.Helpers.React
 module P = Fable.Helpers.React.Props  
 
 type ViewModel = {
-    Counter : Counter.ViewModel 
+    MessageList : MessageList.Model 
 }
-with static member Empty = {Counter = Counter.ViewModel.Empty}
-     static member _Counter =  ((fun x -> x.Counter), (fun t x -> {x with Counter = t}))
+with static member Empty = {MessageList = MessageList.Model.Empty} 
+     static member _MessageList =  ((fun x -> x.MessageList), (fun t x -> {x with MessageList = t}))
 
 let state = ref <| State.init ViewModel.Empty
    
-let counterCursor = 
-    ViewModel._Counter
-    |> Cursor.create state
-
-let clickPrinterCursor = 
-    ViewModel._Counter >-> Counter.ViewModel._Click
+let msgListCurosr = 
+    ViewModel._MessageList
     |> Cursor.create state
 
 ReactDom.render(  
     R.div [] [
-        R.com<Counter.Component,_,_> counterCursor []
-        R.com<ClickPrinter.Component,_,_> clickPrinterCursor []
+        R.com<MessageList.Component,_,_> msgListCurosr []
     ],
     Browser.document.getElementById "content"
 )  

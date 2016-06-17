@@ -43,13 +43,13 @@ module Operators =
     
 
 type cursor<'a> = {
-    Getter: unit -> 'a
+    Getter: unit -> 'a 
     Setter: 'a -> unit
     Stream: IEvent<'a>
-    
 } 
 
 module Cursor = 
+
     let create state lens : cursor<_> = 
         
         let getter () = 
@@ -70,6 +70,24 @@ module Cursor =
             s.StateUpdate
             |> Event.map (
                 fun n -> Lens.get lens n)
+        {Getter = getter; Setter = setter; Stream = stream}
+    
+    let combine (cursor : cursor<'a>) (lens : lens<'a,'b>) : cursor<'b> = 
+        let getter () = 
+            cursor.Getter ()
+            |> Lens.get lens
+
+        let setter value = 
+            cursor.Getter ()
+            |> Lens.set lens value
+            |> cursor.Setter
+
+
+        let stream = 
+            cursor.Stream |> Event.map (fun n -> Lens.get lens n)
+
+
+        
         {Getter = getter; Setter = setter; Stream = stream}
 
 [<AbstractClass>]

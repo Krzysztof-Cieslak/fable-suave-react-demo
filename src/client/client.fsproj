@@ -22,7 +22,7 @@
     <Optimize>false</Optimize>
     <Tailcalls>false</Tailcalls>
     <OutputPath>bin\Debug\</OutputPath>
-    <CompilationConstants />
+    <DefineConstants />
     <WarningLevel>3</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>true</Prefer32Bit>
@@ -34,7 +34,7 @@
     <Optimize>true</Optimize>
     <Tailcalls>true</Tailcalls>
     <OutputPath>bin\Release\</OutputPath>
-    <CompilationConstants />
+    <DefineConstants />
     <WarningLevel>3</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>true</Prefer32Bit>
@@ -50,13 +50,14 @@
     <Reference Include="System.Numerics" />
     <Reference Include="../../node_modules/fable-core/Fable.Core.dll" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="../../node_modules/fable-import-express/Fable.Import.Express.fs" />
     <Compile Include="../../node_modules/fable-import-react/Fable.Import.React.fs" />
     <Compile Include="../../node_modules/fable-import-react/Fable.Helpers.React.fs" />
     <Compile Include="abstractions.fs" />
-    <Compile Include="counter.fs" />
-    <Compile Include="clickPrinter.fs" />
+    <Compile Include="message.fs" />
+    <Compile Include="messageList.fs" />
     <Compile Include="app.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
