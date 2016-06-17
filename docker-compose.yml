@@ -1,0 +1,7 @@
+version: '2'
+services:
+  rethinkdb:
+    ports:
+     - "8080:8080"
+     - "28015:28015"
+    image: rethinkdb 

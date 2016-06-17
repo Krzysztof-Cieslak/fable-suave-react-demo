@@ -3,3 +3,5 @@ nuget FAKE
 nuget FSharp.Compiler.Service
 nuget Npm.js
 nuget Suave
+nuget RethinkDb.Driver
+nuget Newtonsoft.Json

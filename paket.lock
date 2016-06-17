@@ -1,11 +1,18 @@
 NUGET
   remote: https://www.nuget.org/api/v2
   specs:
-    FAKE (4.26)
+    Common.Logging (3.3.1) - framework: >= net45
+      Common.Logging.Core (>= 3.3.1)
+    Common.Logging.Core (3.3.1) - framework: >= net45
+    FAKE (4.28)
     FSharp.Compiler.Service (3.0)
     FSharp.Core (4.0.0.1)
+    Newtonsoft.Json (8.0.3)
     Node.js (5.3)
     Npm.js (2.13.1)
       Node.js (>= 0.12.7)
+    RethinkDb.Driver (2.3.5)
+      Common.Logging (>= 3.3) - framework: >= net45
+      Newtonsoft.Json (>= 8.0.3) - framework: >= net45
     Suave (1.1.2)
       FSharp.Core (>= 3.1.2.5)

@@ -12,4 +12,4 @@ type Component(cursor) =
     override x.render () = 
         let st = x.GetState ()
         
-        R.span [] (sprintf "Number of clicks: %d. Last click %A" st.Value st.LastClick  |> unbox)
+        R.span [] (sprintf "Number of clicks: %d. Last click: %A" st.Value st.LastClick  |> unbox)
