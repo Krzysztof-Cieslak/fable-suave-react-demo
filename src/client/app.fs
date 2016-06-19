@@ -21,9 +21,16 @@ let msgListCurosr =
     ViewModel._MessageList
     |> Cursor.create state
 
+let handler a t = 
+    let state = msgListCurosr.Getter ()
+    let state' = {Message.Date = DateTime.Now; Message.Text = t; Message.Author = a} :: state.Messages |> List.rev
+    msgListCurosr.Setter {MessageList.Messages = state'}
+    ()
+
 ReactDom.render(  
     R.div [] [
         R.com<MessageList.Component,_,_> msgListCurosr []
+        R.com<MessageForm.Component,_,_> {MessageForm.Handler = handler} []
     ],
     Browser.document.getElementById "content"
 )  

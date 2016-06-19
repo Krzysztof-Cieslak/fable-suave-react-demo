@@ -58,6 +58,7 @@
     <Compile Include="abstractions.fs" />
     <Compile Include="message.fs" />
     <Compile Include="messageList.fs" />
+    <Compile Include="messageForm.fs" />
     <Compile Include="app.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />

@@ -15,9 +15,9 @@ type Component(cursor) =
         let st = x.GetState ()
         
         let messages = st.Messages |> List.mapi (fun i m ->
-            let l : lens<Model, Message.Model> = (fun a -> a.Messages |> List.item i), (fun a b -> ())
+            let l : lens<Model, Message.Model> = (fun a -> a.Messages |> List.item i), (fun a b -> b)
             let crs = Cursor.combine cursor l
-            R.com<Message.Component,_,_> crs []
+            R.com<Message.Component,_,_> crs [] 
         )
         
         R.div [P.ClassName "messageList" ] messages
